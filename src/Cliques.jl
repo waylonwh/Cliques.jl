@@ -64,7 +64,7 @@ Greedy:
 Main.Cliques.MaximalCliques(:BKPivoting, false, 3, [[1, 2, 3]])
 ```
 
-Waylon Wu; 1898699
+Waylon Wu
 2nd June 2025
 """
 module Cliques
@@ -72,6 +72,15 @@ module Cliques
 export largestcliques, complexity, validate, generate
 
 import Random
+
+# The main function enter point that can be called from the command line. It needs the path
+# to the CLQ file as the argument. It reads the graph from the file, runs the scheduler, and
+# reports the largest cliques found.
+function (@main)(args)
+    A = Cliques.CliquesIO.readclq(args[1]) # read the graph from the file
+    lclq = Cliques.Schedule.scheduler(A, 55.0, 0.9, args[1], stderr) # run the scheduler
+    Cliques.CliquesIO.report_largest(lclq, args[1]) # report the largest cliques found
+end
 
 """
     MaximalCliques
@@ -1248,13 +1257,3 @@ end # module CliquesIO
 
 
 end # module Cliques
-
-
-# The main function enter point that can be called from the command line. It needs the path
-# to the CLQ file as the argument. It reads the graph from the file, runs the scheduler, and
-# reports the largest cliques found.
-function (@main)(args)
-    A = Cliques.CliquesIO.readclq(args[1]) # read the graph from the file
-    lclq = Cliques.Schedule.scheduler(A, 55.0, 0.9, args[1], stderr) # run the scheduler
-    Cliques.CliquesIO.report_largest(lclq, args[1]) # report the largest cliques found
-end
